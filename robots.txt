@@ -4,4 +4,4 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
-Sitemap: https://vinichsh-ship-it.github.io/starkverb/sitemap.xml
+Sitemap: https://starkverb.github.io/sitemap.xml
