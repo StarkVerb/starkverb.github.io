@@ -4,4 +4,4 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
-Sitemap: https://starkverb-lernstudio.risenmoat2.chatgpt.site/sitemap.xml
+Sitemap: https://vinichsh-ship-it.github.io/starkverb/sitemap.xml

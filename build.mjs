@@ -1,7 +1,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { lessons } from './lessons.mjs';
 
-const origin = new URL(process.env.STARKVERB_ORIGIN ?? 'https://starkverb-lernstudio.risenmoat2.chatgpt.site').origin;
+const siteUrl = new URL(process.env.STARKVERB_ORIGIN ?? 'https://vinichsh-ship-it.github.io/starkverb/');
+siteUrl.pathname = siteUrl.pathname.replace(/\/?$/, '/');
+const publicUrl = path => new URL(path.replace(/^\//, ''), siteUrl).href;
 const playUrl = 'https://play.google.com/store/apps/details?id=com.tempdev.starkdeutsch';
 const siteName = 'StarkVerb';
 const accents = ['lime', 'lavender', 'peach', 'mint'];
@@ -38,7 +40,7 @@ function footer(root) {
 }
 
 function document({ title, description, pathname, root, main, kind = 'WebPage', image = false }) {
-  const url = new URL(pathname, origin).href;
+  const url = publicUrl(pathname);
   const structured = {
     '@context': 'https://schema.org',
     '@type': kind,
@@ -46,12 +48,12 @@ function document({ title, description, pathname, root, main, kind = 'WebPage', 
     description,
     inLanguage: 'ru',
     url,
-    isPartOf: { '@type': 'WebSite', name: siteName, url: origin },
+    isPartOf: { '@type': 'WebSite', name: siteName, url: siteUrl.href },
     ...(kind === 'LearningResource' ? {
       learningResourceType: 'Lesson',
       teaches: title.split(' | ')[0],
       audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
-      author: { '@type': 'Organization', name: siteName, url: origin },
+      author: { '@type': 'Organization', name: siteName, url: siteUrl.href },
     } : {}),
   };
   return `<!doctype html>
@@ -68,7 +70,7 @@ function document({ title, description, pathname, root, main, kind = 'WebPage', 
 <meta property="og:title" content="${html(title)}">
 <meta property="og:description" content="${html(description)}">
 <meta property="og:url" content="${html(url)}">
-${image ? `<meta property="og:image" content="${origin}/assets/berlin.jpg">` : ''}
+${image ? `<meta property="og:image" content="${html(publicUrl('assets/berlin.jpg'))}">` : ''}
 <link rel="icon" href="${root}assets/icon.png" type="image/png">
 <link rel="stylesheet" href="${root}assets/style.css">
 <script type="application/ld+json">${JSON.stringify(structured).replace(/</g, '\\u003c')}</script>
@@ -223,5 +225,5 @@ lessons.forEach((lesson, index) => {
   mkdirSync(`dist/${lesson.slug}`, { recursive: true });
   writeFileSync(`dist/${lesson.slug}/index.html`, lessonPage(lesson, index));
 });
-writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map(path => `  <url><loc>${origin}${path}</loc></url>`).join('\n')}\n</urlset>\n`);
-writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`);
+writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map(path => `  <url><loc>${html(publicUrl(path))}</loc></url>`).join('\n')}\n</urlset>\n`);
+writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: ${publicUrl('sitemap.xml')}\n`);
