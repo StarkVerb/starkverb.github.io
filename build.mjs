@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { lessons } from './lessons.mjs';
 
-const siteUrl = new URL(process.env.STARKVERB_ORIGIN ?? 'https://vinichsh-ship-it.github.io/starkverb/');
+const siteUrl = new URL(process.env.STARKVERB_ORIGIN ?? 'https://starkverb.github.io/');
 siteUrl.pathname = siteUrl.pathname.replace(/\/?$/, '/');
 const publicUrl = path => new URL(path.replace(/^\//, ''), siteUrl).href;
 const playUrl = 'https://play.google.com/store/apps/details?id=com.tempdev.starkdeutsch';

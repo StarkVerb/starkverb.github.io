@@ -2,7 +2,7 @@
 
 Прототип сайта Android-тренажёра немецкого языка. Русскоязычные пояснения дополнены немецкими формами и примерами.
 
-[Открыть StarkVerb](https://vinichsh-ship-it.github.io/starkverb/)
+[Открыть StarkVerb](https://starkverb.github.io/)
 
 ## Локальный просмотр
 
